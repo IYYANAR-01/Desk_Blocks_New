@@ -1,13 +1,11 @@
 <script lang="ts">
     import { onMount, setContext } from "svelte";
     import { Button } from "deskblocks";
-    import { initApp } from "../lib/util";
+    import { APP, initApp } from "../lib/util";
 
-    let App;
-    setContext("App", App);
-
-    onMount(async() => {
-        App = await initApp();
+    onMount(async () => {
+        await initApp();
+        console.log($APP);
     });
 </script>
 

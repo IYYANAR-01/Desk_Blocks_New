@@ -1,3 +1,5 @@
+import { get, writable } from "svelte/store";
+
 type UserPreference = {
     theme?: "blue" | "red" | "green" | "yellow" | "orange";
     appearance?: "light" | "dark" | "auto" | "pureDark";
@@ -6,8 +8,6 @@ type UserPreference = {
 
 // sets the user preference to the widget
 function setUserPref(userPref: UserPreference) {
-    console.log(`Setting user pref: ${JSON.stringify(userPref)}`);
-
     const root = document.documentElement;
 
     if (userPref.theme) {
@@ -21,8 +21,6 @@ function setUserPref(userPref: UserPreference) {
         if (appearanceClass) root.classList.remove(appearanceClass);
 
         let appearance = userPref.appearance.toLowerCase();
-
-        console.log(`Setting appearance: ${appearance}`);
 
         // Pure dark case
         if (appearance === "puredark") {
@@ -52,14 +50,28 @@ function setUserPref(userPref: UserPreference) {
 }
 
 // initialize the app
-export function initApp(): Promise<APP> {
-    return new Promise((resolve) => {
-        ZOHODESK.extension.onload().then((app) => {
-            setUserPref(app.meta.userPreferences);
-            app.instance.on("user_preference.changed", (pref: UserPreference) => setUserPref(pref));
-            resolve(app);
+export let APP = writable<APP | null>(null);
+
+let appPromise: Promise<APP> | null = null;
+
+export async function initApp(): Promise<APP> {
+    if (APP) {
+        const appValue = get(APP);
+        if (appValue) return Promise.resolve(appValue);
+    }
+
+    if (!appPromise) {
+        appPromise = new Promise<APP>((resolve) => {
+            ZOHODESK.extension.onload().then((app) => {
+                setUserPref(app.meta.userPreferences);
+                app.instance.on("user_preference.changed", setUserPref);
+                APP.set(app);
+                resolve(app);
+            });
         });
-    });
+    }
+
+    return appPromise;
 }
 
 // validate the key for db storage

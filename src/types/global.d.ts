@@ -413,7 +413,7 @@ declare global {
              * US: "https://desk.zoho.com"
              * IN: "https://desk.zoho.in"
              */
-            deskDomainUrls: {
+            deskDomainUrl: {
                 US: string;
                 IN: string;
                 [key: string]: string; // For other regions if applicable
