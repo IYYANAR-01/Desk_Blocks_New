@@ -1,0 +1,37 @@
+.cover {
+    height: 100%;
+    width: 100%;
+}
+
+.dflex {
+    display: flex;
+}
+
+.flexible {
+    flex-grow: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.noShrink {
+    flex-shrink: 0;
+}
+
+.alignCenter {
+    align-items: center;
+}
+
+.flexDir {
+    flex-direction: column;
+}
+
+.scrollY {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.dotted {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

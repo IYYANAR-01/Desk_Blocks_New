@@ -1,0 +1,16 @@
+.container {
+    height: 48px;
+    padding-inline: 15px;
+}
+
+.topBand {
+    border-bottom: 1px solid var(--db-color-border);
+}
+
+.footer {
+    border-top: 1px solid var(--db-color-border);
+}
+
+.leftbox, .rightbox {
+    column-gap: 10px;
+}

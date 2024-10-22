@@ -1,0 +1,41 @@
+.container {
+    width: 250px;
+    border-right: 1px solid var(--db-color-border);
+    background-color: var(--db-color-bg-secondary);
+}
+
+.default {
+    padding: 10px 10px;
+}
+
+.header {
+    padding: 0 15px 15px 20px;
+}
+
+.heading {
+    position: relative;
+}
+
+.heading::after {
+    position: absolute;
+    content: '';
+    bottom: -5px;
+    left: 0;
+    height: 1px;
+    width: 40px;
+    background-color: var(--db-color-bg-inverse);
+}
+
+.addBtnWrapper {
+    margin: 0 10px 10px;
+    position: relative;
+}
+
+.addBtn {
+    height: 32px !important;
+    width: 100%;
+}
+
+.content {
+    padding: 0 10px 10px;
+}

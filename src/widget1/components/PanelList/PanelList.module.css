@@ -1,0 +1,14 @@
+.container {
+    padding: 10px;
+    background-color: var(--db-color-bg);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    border: 1px solid var(--db-color-border-light);
+}
+
+.active {
+    border-left: 2px solid var(--db-color-border-brand-hover);
+    background-color: var(--db-color-bg-selected);
+    cursor: default;
+}

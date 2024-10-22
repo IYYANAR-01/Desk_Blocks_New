@@ -528,7 +528,7 @@ declare global {
          * Allowed values: "arraybuffer", "blob", "document", "json", "text", "ms-stream", "empty string".
          * If `responseType` is mentioned in the payload, `postBody` and `fileObj` will not be considered.
          */
-        responseType?: "arraybuffer" | "blob" | "document" | "json" | "text" | "ms-stream" | "";
+        responseType: "arraybuffer" | "blob" | "document" | "json" | "text" | "ms-stream" | "";
 
         /**
          * An array that helps upload file objects to the third-party domain.

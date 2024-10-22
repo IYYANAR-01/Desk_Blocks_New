@@ -5,7 +5,7 @@
   "service": "DESK",
   "storage": false,
   "type": "personal",
-  "whiteListedDomains": [],
+  "whiteListedDomains": ["https://desk.zoho.com"],
   "modules": {
     "widgets": [
       {
@@ -28,7 +28,17 @@
     "connect-src": []
   },
   "zohoAuthorisation": {},
-  "connectors": [],
+  "connectors": [{
+    "connectionLinkName": "checklist_app",
+    "connectionName": "checklist_app",
+    "serviceName": "zlabs_integration",
+    "userAccess": true,
+    "isUserDefinedService": false,
+    "sharedBy": "665784067",
+    "scope": [
+      "Desk.basic.READ"
+    ]
+  }],
   "config": [],
   "moduleSupport": false
 }
