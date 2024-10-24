@@ -1,0 +1,23 @@
+.container {
+    height: 40px;
+    border: 1px solid var(--db-color-border);
+    margin-top: 8px;
+    padding: 0 15px;
+    border-radius: 4px;
+    column-gap: 15px;
+}
+
+.text {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+} 
+
+.actionBtn {
+    display: none;
+    gap: 10px;
+}
+
+.container:hover .actionBtn {
+    display: flex;
+}

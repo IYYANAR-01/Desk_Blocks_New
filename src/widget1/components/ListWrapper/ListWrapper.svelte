@@ -3,6 +3,7 @@
     import '../../../common/common.css';
     import style from './ListWrapper.module.css';
     import Band from "../../../components/Band/Band.svelte";
+    import List from "../../../components/List/List.svelte";
 </script>
 
 <div class={`${style.container} flexible dflex flexDir`}>
@@ -12,8 +13,14 @@
             class={style.input}
         />
     </div>
-    <div class="flexible scrollY">
-
+    <div class={`${style.content} flexible scrollY`}>
+        <List
+            text={"hello iyyanar"} 
+            type="checkList" 
+            id={"1"}
+            isChecked
+            
+        />
     </div>
     <Band type="footer">
         <div slot="right">

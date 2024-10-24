@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import '../../common/common.css';
     import style from './Band.module.css';
     export let type = "topBand";
