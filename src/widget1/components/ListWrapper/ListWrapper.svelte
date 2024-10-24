@@ -16,7 +16,6 @@
 
     </div>
     <Band type="footer">
-        <Button slot="left" variant="danger-secondary">Delete Template</Button>
         <div slot="right">
             <Button variant="tertiary">Cancel</Button>
             <Button variant="primary">Save</Button>

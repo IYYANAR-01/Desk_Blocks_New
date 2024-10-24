@@ -3,7 +3,7 @@
     "en"
   ],
   "service": "DESK",
-  "storage": false,
+  "storage": true,
   "type": "personal",
   "whiteListedDomains": ["https://desk.zoho.com"],
   "modules": {

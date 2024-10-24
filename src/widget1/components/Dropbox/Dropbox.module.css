@@ -5,7 +5,7 @@
     padding-block: 8px;
     position: absolute;
     border: 1px solid var(--db-color-border-light);
-    max-height: 400px;
+    max-height: 250px;
 }
 
 .bottomLeft {
@@ -23,6 +23,10 @@
     padding: 5px 10px;
     background-color: var(--db-color-bg);
     cursor: pointer;
+    width: 100%;
+    outline: none;
+    border: none;
+    color: var(--db-color-text);
 }
 
 .list:hover {
