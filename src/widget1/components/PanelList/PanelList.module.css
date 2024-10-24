@@ -6,6 +6,9 @@
     cursor: pointer;
     margin-bottom: 8px;
     border: 1px solid var(--db-color-border-light);
+    outline: none;
+    width: 100%;
+    color: var(--db-color-text);
 }
 
 .active {

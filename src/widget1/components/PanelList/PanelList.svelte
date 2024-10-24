@@ -3,12 +3,27 @@
     import { IconDelete } from 'deskblocks/icons';
     import style from './PanelList.module.css';
 
+    export let id = "";
     export let text = "";
     export let isActive = false;
     export let needDelete = true;
+    export let onClick;
+    export let onDelete;
+
+    const handleClick = (e:any) => {
+        onClick && onClick(e, id);
+    }
+    const handleDelete = (e:any) => {
+        e.stopPropagation();
+        onDelete && onDelete(e, id);
+    }
 </script>
 
-<div class={`${style.container} ${isActive ? style.active : ''} dflex alignCenter`} use:tooltip={{ content: text }}>
+<button 
+    class={`${style.container} ${isActive ? style.active : ''} dflex alignCenter`} 
+    use:tooltip={{ content: text }}
+    on:click={handleClick}
+>
     <div class="flexible">
         <Text 
             tag="p" 
@@ -21,9 +36,9 @@
     </div>
     {#if needDelete}
         <div class={`${style.deleteBtn} shrink`}>
-            <IconButton variant="danger-secondary">
+            <IconButton variant="danger-secondary" on:click={handleDelete}>
                 <Icon icon={IconDelete} />
             </IconButton>
         </div>
     {/if}
-</div>
+</button>

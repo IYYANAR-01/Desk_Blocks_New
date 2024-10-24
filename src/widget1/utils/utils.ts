@@ -1,3 +1,5 @@
+import { DB } from "../../lib/util";
+
 export async function getLayoutList() {
     const payload:RequestOptions = {
         url: `https://desk.zoho.com/api/v1/layouts?module=tickets`,
@@ -8,6 +10,7 @@ export async function getLayoutList() {
         responseType: "json",
     };
     let layoutData = await ZOHODESK.request(payload);
+    console.log({layoutData});
     let list = layoutData.data.statusMessage.data || [];
     return list.reduce((acc:any, cur:any) => {
         const { layoutName, id } = cur;
@@ -18,3 +21,12 @@ export async function getLayoutList() {
         return acc;
     }, {});
 }
+
+export async function getCheckList () {
+    const data = await DB.get({
+        key: "checkList",
+        queriableValue: "checkList_extension",
+        from: 0,
+    });
+    return data["database.get"];
+};

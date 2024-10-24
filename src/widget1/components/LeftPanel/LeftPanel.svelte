@@ -1,54 +1,68 @@
 <script lang="ts">
-    import { getContext, onDestroy } from 'svelte';
+    import { getContext } from "svelte";
     import { Text, Icon, Button } from "deskblocks";
     import { IconPlus } from "deskblocks/icons";
     import PanelList from "../PanelList/PanelList.svelte";
     import Dropbox from "../Dropbox/Dropbox.svelte";
     import "../../../common/common.css";
-    import style from "./LeftPanel.module.css"; 
+    import style from "./LeftPanel.module.css";
+    import { CONTEXT_NAME } from "../../constants";
 
     let isPopupOpen = false;
     const toggleDropbox = () => {
         isPopupOpen = !isPopupOpen;
     };
 
-    const sharedData:any = getContext('global_checklist_data');
-    let data:any;
+    const sharedData: any = getContext(CONTEXT_NAME);
 
-    const unsubscribe = sharedData.subscribe((value:any) => {
-        console.log(value);
-        
-        data = value
+    $: addedLayoutList = Object.keys($sharedData.checkListData).filter((value) => value !== "default");
+    $: dropboxList = Object.values($sharedData.layoutList).filter((value:any) => {
+        return !(addedLayoutList.includes(value.id))
     });
 
-    onDestroy(() => {
-        unsubscribe();
-    });
-
-    // let data:any = getContext('global_checklist_data');
-    const { layoutList={}, checkListData={}, activeTemplate, handleAddTemplate } = $sharedData;
-    const addedLayoutList = Object.keys(checkListData).filter(value=>value!=='default');
-
-    const handleAdd = (e:any, id:string) => {
+    const handleAdd = (e: any, id: string) => {
         let obj = {
-            [id]: []
-        }
-        sharedData.update((data:any) => ({ ...data, checkListData: {...obj, ...checkListData} }));
-        console.log(data, '...');
+            [id]: [],
+        };
+
+        sharedData.update((data: any) => {
+            return { ...data, checkListData: { ...obj, ...$sharedData.checkListData } };
+        });
+    };
+
+    const handleRemove = (e:any, id: string) => {
+        sharedData.update((data: any) => {
+            if(id === data.activeTemplate) {
+                data.activeTemplate = 'default';
+            }
+            delete data.checkListData[id];
+            return { ...data };
+        });
+    }
+
+    const handleSelect = (e:any, id:string) => {
+        sharedData.update((data: any) => {
+            data.activeTemplate = id;
+            return { ...data };
+        });
     }
 </script>
 
 <div class={`${style.container} noShrink dflex flexDir cnt`}>
     <div class={`${style.default}`}>
         <PanelList 
+            id="default"
             text="Default Template" 
-            isActive={data.activeTemplate === 'default'}
-            needDelete={false}
+            isActive={$sharedData?.activeTemplate === "default"} 
+            needDelete={false} 
+            onClick={handleSelect}
         />
     </div>
+
     <div class={`${style.header} dflex alignCenter noShrink`}>
         <Text weight="medium" class={style.heading}>Layout Specified Templates</Text>
     </div>
+
     <div class={style.addBtnWrapper}>
         <Button class="btn" on:click={toggleDropbox}>
             <Icon icon={IconPlus} size={20} />
@@ -56,17 +70,21 @@
         </Button>
         {#if isPopupOpen}
             <Dropbox 
-                position="leftTop"
-                options={Object.values(layoutList)} 
-                onClick={handleAdd}
+                position="leftTop" 
+                options={dropboxList} 
+                onClick={handleAdd} 
             />
         {/if}
     </div>
+
     <div class={`${style.content} flexible scrollY`}>
-        {#each addedLayoutList as template}
-            <PanelList 
-                text={layoutList[`${template}`].text} 
-                isActive={activeTemplate === layoutList[template].id}
+        {#each addedLayoutList as template (template)}
+            <PanelList
+                onDelete={handleRemove}
+                onClick={handleSelect}
+                id={template}
+                text={$sharedData.layoutList[`${template}`].text}
+                isActive={$sharedData.activeTemplate === $sharedData.layoutList[template].id}
             />
         {/each}
     </div>
