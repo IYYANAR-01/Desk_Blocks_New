@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, setContext } from "svelte";
+    import { onMount, setContext, getContext } from "svelte";
     import { writable } from "svelte/store";
     import { Text } from "deskblocks";
     import Band from "../components/Band/Band.svelte";
@@ -68,7 +68,7 @@
             {#if isEnterpriseEdition}
                 <LeftPanel />
             {/if}
-            <ListWrapper />
+            <ListWrapper isEnterpriseEdition={isEnterpriseEdition}/>
         </div>
     {/if}
 </main>

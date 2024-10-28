@@ -1,0 +1,15 @@
+.input {
+    border: 1px solid var(--db-color-border);
+    background-color: var(--db-color-bg);
+    padding-inline: 15px;
+    height: 40px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--db-color-text);
+}
+
+.input:focus {
+    border-color: var(--db-color-border-focus);
+    outline: none;
+}

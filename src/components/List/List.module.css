@@ -7,6 +7,10 @@
     column-gap: 15px;
 }
 
+.container:focus-within {
+    border: 1px solid var(--db-color-border-focus);
+}
+
 .text {
     overflow-x: hidden;
     text-overflow: ellipsis;
@@ -20,4 +24,16 @@
 
 .container:hover .actionBtn {
     display: flex;
+}
+
+.input {
+    border: none;
+    outline: none;
+    background-color: var(--db-color-bg);
+    color: var(--db-color-text);
+    font-size: 14px;
+}
+
+.bg {
+    background-color: var(--db-color-bg-selected);
 }

@@ -11,6 +11,10 @@
     color: var(--db-color-text);
 }
 
+.container:hover:not(.active) {
+    border-color: var(--db-color-border);
+}
+
 .active {
     border-left: 2px solid var(--db-color-border-brand-hover);
     background-color: var(--db-color-bg-selected);

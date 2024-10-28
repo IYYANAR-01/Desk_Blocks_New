@@ -13,10 +13,10 @@
         isPopupOpen = !isPopupOpen;
     };
 
-    const sharedData: any = getContext(CONTEXT_NAME);
+    const context_data: any = getContext(CONTEXT_NAME);
 
-    $: addedLayoutList = Object.keys($sharedData.checkListData).filter((value) => value !== "default");
-    $: dropboxList = Object.values($sharedData.layoutList).filter((value:any) => {
+    $: addedLayoutList = Object.keys($context_data.checkListData).filter((value) => value !== "default");
+    $: dropboxList = Object.values($context_data.layoutList).filter((value:any) => {
         return !(addedLayoutList.includes(value.id))
     });
 
@@ -25,23 +25,13 @@
             [id]: [],
         };
 
-        sharedData.update((data: any) => {
-            return { ...data, checkListData: { ...obj, ...$sharedData.checkListData } };
+        context_data.update((data: any) => {
+            return { ...data, checkListData: { ...obj, ...$context_data.checkListData } };
         });
     };
 
-    const handleRemove = (e:any, id: string) => {
-        sharedData.update((data: any) => {
-            if(id === data.activeTemplate) {
-                data.activeTemplate = 'default';
-            }
-            delete data.checkListData[id];
-            return { ...data };
-        });
-    }
-
     const handleSelect = (e:any, id:string) => {
-        sharedData.update((data: any) => {
+        context_data.update((data: any) => {
             data.activeTemplate = id;
             return { ...data };
         });
@@ -53,7 +43,7 @@
         <PanelList 
             id="default"
             text="Default Template" 
-            isActive={$sharedData?.activeTemplate === "default"} 
+            isActive={$context_data?.activeTemplate === "default"} 
             needDelete={false} 
             onClick={handleSelect}
         />
@@ -80,11 +70,11 @@
     <div class={`${style.content} flexible scrollY`}>
         {#each addedLayoutList as template (template)}
             <PanelList
-                onDelete={handleRemove}
                 onClick={handleSelect}
                 id={template}
-                text={$sharedData.layoutList[`${template}`].text}
-                isActive={$sharedData.activeTemplate === $sharedData.layoutList[template].id}
+                needDelete={false} 
+                text={$context_data.layoutList[`${template}`].text}
+                isActive={$context_data.activeTemplate === $context_data.layoutList[template].id}
             />
         {/each}
     </div>
