@@ -24,7 +24,6 @@
         let obj = {
             [id]: [],
         };
-
         context_data.update((data: any) => {
             return { ...data, checkListData: { ...obj, ...$context_data.checkListData } };
         });
@@ -36,6 +35,8 @@
             return { ...data };
         });
     }
+
+    console.log(addedLayoutList, $context_data.checkListData, '.....')
 </script>
 
 <div class={`${style.container} noShrink dflex flexDir cnt`}>
@@ -68,12 +69,12 @@
     </div>
 
     <div class={`${style.content} flexible scrollY`}>
-        {#each addedLayoutList as template (template)}
+        {#each addedLayoutList as template}
             <PanelList
                 onClick={handleSelect}
                 id={template}
                 needDelete={false} 
-                text={$context_data.layoutList[`${template}`].text}
+                text={$context_data.layoutList[template].text}
                 isActive={$context_data.activeTemplate === $context_data.layoutList[template].id}
             />
         {/each}

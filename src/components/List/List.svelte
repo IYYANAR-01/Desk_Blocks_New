@@ -11,6 +11,7 @@
     export let handleDelete;
     export let handleCheck;
     export let isEditable = false;
+    export let needAction = true;
 
     const onEdit = (e:any) => {
         handleEdit && handleEdit(e, id);
@@ -36,7 +37,7 @@
             {text}
         </Text>
     </div>
-    {#if !isEditable}
+    {#if !isEditable && needAction}
         <div class={`${style.actionBtn}`}>
             <IconButton variant="ghost" on:click={onEdit} class={style.editBtn}>
                 <Icon icon={IconEdit}/>

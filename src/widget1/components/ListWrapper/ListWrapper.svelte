@@ -1,12 +1,13 @@
 <script lang="ts">   
     import { getContext } from "svelte";
-    import { Text, Icon, Button } from "deskblocks";
-    import '../../../common/common.css';
-    import style from './ListWrapper.module.css';
+    import { Text, Spinner, Button } from "deskblocks";
     import Band from "../../../components/Band/Band.svelte";
     import List from "../../../components/List/List.svelte";
     import { CONTEXT_NAME } from "../../constants";
     import Textbox from "../../../components/Textbox/Textbox.svelte";
+    import { setCheckList } from "../../utils/utils";
+    import '../../../common/common.css';
+    import style from './ListWrapper.module.css';
 
     const context_data: any = getContext(CONTEXT_NAME);
     export let isEnterpriseEdition = false;
@@ -14,11 +15,23 @@
     let inputRef:any;
     let isEdited:boolean = false;
     let curEditId:string = "";
+    let isSaving:boolean = false;
 
-    $: list = $context_data.checkListData[$context_data.activeTemplate] || [];
-    console.log($context_data.checkListData[$context_data.activeTemplate], list, '...');
+    let template = $context_data.activeTemplate;
+    let list =  $context_data.checkListData[$context_data.activeTemplate] || [];
 
-    const handleEdit = async (editedValue:any, id:string) => {
+    $: {
+        if(template !== $context_data.activeTemplate) {
+            value = '';
+            curEditId = '';
+            inputRef.focus();
+            isEdited = false;
+            template = $context_data.activeTemplate;
+            list =  $context_data.checkListData[$context_data.activeTemplate] || [];
+        }
+    }
+
+    const handleEdit = async (editedValue:any, id:any) => {
         list[id].text = editedValue;
         curEditId = "";
         value = "";
@@ -27,7 +40,6 @@
     const handleEnter = (e:any) => {
         if(e.key === "Enter") {
             value = value.trim();
-            console.log(curEditId, '...enter');
             if(value !== '') {
                 if(curEditId !== '') {
                     handleEdit(value, curEditId);
@@ -40,12 +52,18 @@
         }
     }
 
-    const onDeleteTemplate = (e:any) => {
-        context_data.update((data: any) => {
-            delete data.checkListData[data.activeTemplate];
-            data.activeTemplate = 'default';
-            return { ...data };
-        });
+    const onDeleteTemplate = async (e:any) => {
+        try {
+            let contextData = {...$context_data.checkListData};
+            delete contextData[template];
+            let setdata = await setCheckList(contextData);
+            console.log(setdata, '...set');
+            delete $context_data.checkListData[template];
+            $context_data.activeTemplate = 'default';
+            $context_data = {...$context_data};
+        } catch (error) {
+            throw new Error("check the onDeleteTemplate method");
+        }
     }
 
     const onEdit = (e:any, id:number) => {
@@ -59,6 +77,28 @@
     const onRemove = (e:any, id:number) => {
         list.splice(id, 1);
         list = [...list];
+        isEdited = true;
+    }
+
+    const onCancel = () => {
+        let newList = $context_data.checkListData[$context_data.activeTemplate] || [];
+        list = [...newList];
+        isEdited = false;
+    }
+
+    const onSave = async () => {
+        isSaving = true;
+        try {
+            let storedata = $context_data.checkListData;
+            storedata[$context_data.activeTemplate] = [...list];
+            let setdata = await setCheckList(storedata);
+            console.log(setdata, '...set');
+            isEdited = false;
+        } catch (error) {
+            throw new Error("check the onSave method");
+        } finally {
+            isSaving = false; 
+        }
     }
 
 </script> 
@@ -94,22 +134,35 @@
         />
     </div>
     <div class={`${style.content} flexible scrollY`}>
-        {#each list as data, index}
-            <List
-                text={data.text}
-                needCheckbox={false}
-                id={index}
-                handleEdit={onEdit}
-                handleDelete={onRemove}
-                isEditable={curEditId === index}
-            />
-        {/each}
+        {#if list.length === 0} 
+            <div class={`${style.emptyContainer} dflex cover alignBoth`}>
+                <Text weight='bold'>No CheckList Added</Text>
+            </div>
+        {:else}
+            {#each list as data, index}
+                <List
+                    text={data.text}
+                    needCheckbox={false}
+                    id={index}
+                    handleEdit={onEdit}
+                    handleDelete={onRemove}
+                    isEditable={curEditId === `${index}`}
+                    needAction={curEditId === ""}
+                />
+            {/each}
+        {/if}
     </div>
     {#if isEdited}
         <Band type="footer">
             <div slot="right">
-                <Button variant="tertiary">Cancel</Button>
-                <Button variant="primary">Save</Button>
+                <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
+                <Button variant="primary" on:click={onSave}>
+                    {#if isSaving}
+                        <Spinner slot="left-icon" onbrand /> Loading 
+                    {:else} 
+                        Save
+                    {/if}
+                </Button>
             </div>
         </Band>
     {/if}

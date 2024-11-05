@@ -28,5 +28,9 @@ export async function getCheckList () {
         queriableValue: "checkList_extension",
         from: 0,
     });
-    return data["database.get"];
+    return data["database.get"] || [];
 };
+
+export async function setCheckList (value:any) {
+    return await DB.set({ key: "checkList", value, queriableValue: "checkList_extension" })
+}

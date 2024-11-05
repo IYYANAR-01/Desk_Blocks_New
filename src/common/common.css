@@ -21,6 +21,11 @@
     align-items: center;
 }
 
+.alignBoth {
+    align-items: center;
+    justify-content: center;
+}
+
 .flexDir {
     flex-direction: column;
 }

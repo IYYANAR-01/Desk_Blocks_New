@@ -34,9 +34,12 @@
 
             // get the stored DB data
             let checkList = await getCheckList();
+            console.log(checkList, 'checkList');
             let checkListData: any;
             if (Object.keys(checkList).length === 0) {
                 checkListData = { ...DEFAULT_DATA };
+            } else {
+                checkListData = checkList.data[0].value;
             }
 
             if (isEnterpriseEdition) {
