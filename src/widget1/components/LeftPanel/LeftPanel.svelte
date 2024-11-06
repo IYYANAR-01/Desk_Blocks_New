@@ -27,6 +27,7 @@
         context_data.update((data: any) => {
             return { ...data, checkListData: { ...obj, ...$context_data.checkListData } };
         });
+        isPopupOpen = false;
     };
 
     const handleSelect = (e:any, id:string) => {

@@ -11,14 +11,14 @@
       {
         "location": "desk.ticket.detail.subtab",
         "url": "/widget1.html",
-        "name": "Test Extension",
+        "name": "Preference",
         "logo": "/assets/logo.png",
         "icon": "/assets/logo.png"
       },
       {
-        "location": "desk.extension.preference",
+        "location": "desk.ticket.detail.rightpanel",
         "url": "/widget2.html",
-        "name": "Preference",
+        "name": "CheckList",
         "logo": "/assets/logo.png",
         "icon": "/assets/logo.png"
       }

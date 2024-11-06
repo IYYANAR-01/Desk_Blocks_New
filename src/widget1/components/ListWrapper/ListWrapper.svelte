@@ -5,7 +5,7 @@
     import List from "../../../components/List/List.svelte";
     import { CONTEXT_NAME } from "../../constants";
     import Textbox from "../../../components/Textbox/Textbox.svelte";
-    import { setCheckList } from "../../utils/utils";
+    import { setCheckList } from "../../../utils/utils";
     import '../../../common/common.css';
     import style from './ListWrapper.module.css';
 
@@ -18,7 +18,7 @@
     let isSaving:boolean = false;
 
     let template = $context_data.activeTemplate;
-    let list =  $context_data.checkListData[$context_data.activeTemplate] || [];
+    let list =  [...$context_data.checkListData[$context_data.activeTemplate]].map((data)=>{ return {...data} });
 
     $: {
         if(template !== $context_data.activeTemplate) {
@@ -27,7 +27,7 @@
             inputRef.focus();
             isEdited = false;
             template = $context_data.activeTemplate;
-            list =  $context_data.checkListData[$context_data.activeTemplate] || [];
+            list =  [...$context_data.checkListData[$context_data.activeTemplate]].map((data)=>{ return {...data} });
         }
     }
 
@@ -103,7 +103,7 @@
 
 </script> 
 
-<div class={`${style.container} flexible dflex flexDir`}>
+<div class={`flexible dflex flexDir`}>
     {#if isEnterpriseEdition}
         <Band>
             <Text 
@@ -135,7 +135,7 @@
     </div>
     <div class={`${style.content} flexible scrollY`}>
         {#if list.length === 0} 
-            <div class={`${style.emptyContainer} dflex cover alignBoth`}>
+            <div class={`dflex cover alignBoth`}>
                 <Text weight='bold'>No CheckList Added</Text>
             </div>
         {:else}

@@ -7,9 +7,9 @@
     export let text = 'text';
     export let needCheckbox = true;
     export let isChecked = false;
-    export let handleEdit;
-    export let handleDelete;
-    export let handleCheck;
+    export let handleEdit = (e:any, id:number) => {};
+    export let handleDelete = (e:any, id:number) => {};
+    export let handleCheck = (e:any, id:number, isChecked:boolean) => {};
     export let isEditable = false;
     export let needAction = true;
 
@@ -20,7 +20,7 @@
         handleDelete && handleDelete(e, id);
     }
     const onCheck = (e:any) => {
-        handleCheck && handleCheck(e, id);
+        handleCheck && handleCheck(e, id, isChecked);
     }
 </script>
 

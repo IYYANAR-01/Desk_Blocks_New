@@ -7,8 +7,8 @@
     export let text = "";
     export let isActive = false;
     export let needDelete = true;
-    export let onClick;
-    export let onDelete;
+    export let onClick = (e:any, id:string) => {};
+    export let onDelete = (e:any, id:string) => {};
 
     const handleClick = (e:any) => {
         onClick && onClick(e, id);
@@ -21,7 +21,6 @@
 
 <button 
     class={`${style.container} ${isActive ? style.active : ''} dflex alignCenter`} 
-    use:tooltip={{ content: text }}
     on:click={handleClick}
 >
     <div class="flexible">

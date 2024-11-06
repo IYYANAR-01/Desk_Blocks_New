@@ -1,13 +1,14 @@
 <script lang="ts">
-    import { onMount, setContext, getContext } from "svelte";
+    import { onMount, setContext } from "svelte";
     import { writable } from "svelte/store";
     import { Text } from "deskblocks";
     import Band from "../components/Band/Band.svelte";
     import LeftPanel from "./components/LeftPanel/LeftPanel.svelte";
     import ListWrapper from "./components/ListWrapper/ListWrapper.svelte";
     import { APP, initApp } from "../lib/util";
-    import { getLayoutList, getCheckList } from "./utils/utils";
+    import { getLayoutList, getCheckList } from "../utils/utils";
     import { DEFAULT_DATA, CONTEXT_NAME } from "./constants";
+    import '../common/common.css';
 
     let isEnterpriseEdition: boolean;
     let isLoading = true;
@@ -39,7 +40,7 @@
             if (Object.keys(checkList).length === 0) {
                 checkListData = { ...DEFAULT_DATA };
             } else {
-                checkListData = checkList.data[0].value;
+                checkListData = checkList;
             }
 
             if (isEnterpriseEdition) {
@@ -50,10 +51,15 @@
                     checkListData,
                     activeTemplate: 'default'
                 });
+            } else {
+                data.set({
+                    checkListData,
+                    activeTemplate: 'default'
+                });
             }
             isLoading = false;
         } catch (error) {
-            throw error;
+            throw new Error("check the onmount method in app");
         }
     });
 </script>
