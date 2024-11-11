@@ -5,14 +5,18 @@
     import { APP, initApp } from "../lib/util";
     import ListPage from "./ListPage/ListPage.svelte";
     import Band from "../components/Band/Band.svelte";
-    import { getTicket, getCheckList, getCheckList_ticket } from "../utils/utils";
+    import {
+        getTicket,
+        getCheckList,
+        getCheckList_ticket,
+    } from "../utils/utils";
     import { CONTEXT_NAME } from "./constants";
-    import '../common/common.css';
+    import "../common/common.css";
 
     // context data type
     type Data = {
         checklistData: any;
-        ticketId: number
+        ticketId: number;
     };
 
     let data = writable<Data | {}>({});
@@ -20,12 +24,18 @@
 
     let isLoading = true;
 
-    onMount(async () => {
-        await initApp();
-        console.log($APP);
+    const getDetails = async () => {
+        console.log("fn called...");
 
-        let { ticket } = await ZOHODESK.get("ticket");
-        console.log(ticket, 'ticketData');
+        let ticket;
+        
+        try {
+            let ticketData = await ZOHODESK.get("ticket");
+            ticket = ticketData.ticket;
+            console.log(ticket, "ticketData");
+        } catch (error) {
+            console.log(error);
+        }
 
         let checkListData;
 
@@ -35,12 +45,25 @@
         } catch (error) {
             let layoutId = await getTicket(ticket.id);
             let checkList = await getCheckList();
-            let list = checkList[layoutId] ? checkList[layoutId] : checkList["default"];
+            let list = checkList[layoutId]
+                ? checkList[layoutId]
+                : checkList["default"];
             checkListData = [...list];
         }
-        data.set({checkListData, ticketId: ticket.id});
+        data.set({ checkListData, ticketId: ticket.id });
         isLoading = false;
-    })
+    };
+
+    onMount(async () => {
+        await initApp();
+        console.log($APP);
+
+        $APP?.instance.on("ticket_Shift", async () => {
+            console.log("first");
+            await getDetails();
+        });
+        await getDetails();
+    });
 </script>
 
 <main class="cover dflex flexDir">
@@ -50,7 +73,7 @@
     {#if isLoading}
         <div>Loading...</div>
     {:else}
-        <ListPage/>
+        <ListPage />
     {/if}
 </main>
 
