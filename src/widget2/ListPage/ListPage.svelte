@@ -55,10 +55,8 @@
     }
 
     const onCheck = async (e:any, id:number, isChecked:boolean) => {
-        console.log(isChecked);
         list[id].isChecked = isChecked;
-        let setdata = await setCheckList_ticket($context_data.ticketId, list);
-        console.log(setdata, '...');
+        await setCheckList_ticket($context_data.ticketId, list);
     }
 
     const onCancel = () => {
@@ -69,10 +67,21 @@
     const onSave = async () => {
         isSaving = true;
         try {
-            let setdata = await setCheckList_ticket($context_data.ticketId, list);
-            console.log(setdata, '...');
+            await setCheckList_ticket($context_data.ticketId, list);
             $context_data.checkListData = [...list];
+            ZOHODESK.notify({
+                title : "Success",
+                content : `Successfully added checklist data in this ticket`,
+                icon:"success",
+                autoClose: false
+            });
         } catch (error) {
+            ZOHODESK.notify({
+                title : "Error",
+                content : `Something went wrong, data cannot be saved`,
+                icon:"success",
+                autoClose: false
+            });
            throw new Error("check the save method"); 
         } finally {
             isSaving = false;
@@ -111,7 +120,7 @@
             {/each}
         {/if}
     </div>
-    {#if isEdited}
+    {#if isEdited && curEditId === ""}
         <Band type="footer">
             <div slot="right">
                 <Button variant="tertiary" on:click={onCancel}>Cancel</Button>

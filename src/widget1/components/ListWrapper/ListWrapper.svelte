@@ -10,7 +10,7 @@
     import style from './ListWrapper.module.css';
 
     const context_data: any = getContext(CONTEXT_NAME);
-    export let isEnterpriseEdition = false;
+    export let isMultiLayout = false;
     let value:string = '';
     let inputRef:any;
     let isEdited:boolean = false;
@@ -54,15 +54,33 @@
 
     const onDeleteTemplate = async (e:any) => {
         try {
-            let contextData = {...$context_data.checkListData};
-            delete contextData[template];
-            let setdata = await setCheckList(contextData);
-            console.log(setdata, '...set');
-            delete $context_data.checkListData[template];
-            $context_data.activeTemplate = 'default';
-            $context_data = {...$context_data};
+            await ZOHODESK.showpopup({
+                title : "Delete",
+                content:"Are you sure, you want to delete this layout specified template",
+                type : "confirmation",
+                contentType : "html",
+                color : "red",
+                okText : "Delete",
+                cancelText : "Cancel"
+            });
+            try {
+                let contextData = {...$context_data.checkListData};
+                delete contextData[template];
+                await setCheckList(contextData);
+                delete $context_data.checkListData[template];
+                $context_data.activeTemplate = 'default';
+                $context_data = {...$context_data};
+            } catch (error) {
+                ZOHODESK.notify({
+                    title : "Error",
+                    content : `Something went wrong, data cannot be delete`,
+                    icon:"success",
+                    autoClose: false
+                });
+                throw new Error("check the onDeleteTemplate method");
+            }
         } catch (error) {
-            throw new Error("check the onDeleteTemplate method");
+            
         }
     }
 
@@ -91,10 +109,21 @@
         try {
             let storedata = $context_data.checkListData;
             storedata[$context_data.activeTemplate] = [...list];
-            let setdata = await setCheckList(storedata);
-            console.log(setdata, '...set');
+            await setCheckList(storedata);
             isEdited = false;
+            ZOHODESK.notify({
+                title : "Success",
+                content : `Successfully added checklist data in ${template} layout template`,
+                icon:"success",
+                autoClose: false
+            });
         } catch (error) {
+            ZOHODESK.notify({
+                title : "Error",
+                content : `Something went wrong, data cannot be saved`,
+                icon:"success",
+                autoClose: false
+            });
             throw new Error("check the onSave method");
         } finally {
             isSaving = false; 
@@ -104,7 +133,7 @@
 </script> 
 
 <div class={`flexible dflex flexDir`}>
-    {#if isEnterpriseEdition}
+    {#if isMultiLayout}
         <Band>
             <Text 
                 slot="left" 
@@ -152,7 +181,7 @@
             {/each}
         {/if}
     </div>
-    {#if isEdited}
+    {#if isEdited && curEditId === ""}
         <Band type="footer">
             <div slot="right">
                 <Button variant="tertiary" on:click={onCancel}>Cancel</Button>

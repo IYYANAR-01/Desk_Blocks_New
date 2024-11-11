@@ -1,7 +1,7 @@
 import { DB } from "../lib/util";
 
 export async function getLayoutList() {
-    const payload:RequestOptions = {
+    const payloadLayout:RequestOptions = {
         url: `https://desk.zoho.com/api/v1/layouts?module=tickets`,
         headers: {},
         type: "GET",
@@ -9,14 +9,28 @@ export async function getLayoutList() {
         connectionLinkName: "checklist_app",
         responseType: "json",
     };
-    let { data } = await ZOHODESK.request(payload);
-    console.log({data});
+    const payloadDept:RequestOptions = {
+        url: `https://desk.zoho.com/api/v1/departments?isEnabled=true`,
+        headers: {},
+        type: "GET",
+        data: {},
+        connectionLinkName: "checklist_app",
+        responseType: "json",
+    };
+    let { data } = await ZOHODESK.request(payloadLayout);
     let list = data.statusMessage.data || [];
+
+    let  departments = await ZOHODESK.request(payloadDept);
+    let deptList = departments.data.statusMessage.data.map((d:any)=>d.id);
+
     return list.reduce((acc:any, cur:any) => {
-        const { layoutName, id } = cur;
-        acc[`${id}`] = {
-            text: layoutName,
-            id
+        const { layoutName, id, departmentId } = cur;
+        if(deptList.includes(departmentId)) {
+            acc[`${id}`] = {
+                text: layoutName,
+                id,
+                departmentId
+            }
         }
         return acc;
     }, {});
@@ -28,7 +42,7 @@ export async function getCheckList () {
         queriableValue: "checkList_layout",
         from: 0,
     });
-    return data["database.get"].data[0].value;
+    return data["database.get"].data ? data["database.get"].data[0].value : {};
 };
 
 export async function setCheckList (value:any) {
@@ -45,7 +59,6 @@ export async function getTicket(id:number) {
         responseType: "json",
     };
     let { data } = await ZOHODESK.request(payload);
-    console.log(data.statusMessage.layoutId);
     return data.statusMessage.layoutId;
 }
 

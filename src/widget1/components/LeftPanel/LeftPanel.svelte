@@ -24,20 +24,15 @@
         let obj = {
             [id]: [],
         };
-        context_data.update((data: any) => {
-            return { ...data, checkListData: { ...obj, ...$context_data.checkListData } };
-        });
+        $context_data.checkListData = { ...obj, ...$context_data.checkListData };
+        $context_data.activeTemplate = id;
         isPopupOpen = false;
     };
 
     const handleSelect = (e:any, id:string) => {
-        context_data.update((data: any) => {
-            data.activeTemplate = id;
-            return { ...data };
-        });
+        $context_data.activeTemplate = id;
     }
 
-    console.log(addedLayoutList, $context_data.checkListData, '.....')
 </script>
 
 <div class={`${style.container} noShrink dflex flexDir cnt`}>
@@ -50,16 +45,17 @@
             onClick={handleSelect}
         />
     </div>
-
     <div class={`${style.header} dflex alignCenter noShrink`}>
         <Text weight="medium" class={style.heading}>Layout Specified Templates</Text>
     </div>
-
     <div class={style.addBtnWrapper}>
-        <Button class="btn" on:click={toggleDropbox}>
-            <Icon icon={IconPlus} size={20} />
-            Add Layout
-        </Button>
+        {#if dropboxList.length !== 0}
+            <Button class="btn" on:click={toggleDropbox}>
+                <Icon icon={IconPlus} size={20} />
+                Add Layout
+            </Button>
+        {/if}
+
         {#if isPopupOpen}
             <Dropbox 
                 position="leftTop" 

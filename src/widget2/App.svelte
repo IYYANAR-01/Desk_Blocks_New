@@ -25,29 +25,28 @@
     let isLoading = true;
 
     const getDetails = async () => {
-        console.log("fn called...");
-
+        // get the ticket data
         let ticket;
-        
         try {
             let ticketData = await ZOHODESK.get("ticket");
             ticket = ticketData.ticket;
-            console.log(ticket, "ticketData");
         } catch (error) {
             console.log(error);
         }
 
         let checkListData;
-
         try {
+            // getting stored specified ticket data
             let checkListTicket = await getCheckList_ticket(ticket.id);
             checkListData = [...checkListTicket];
         } catch (error) {
+            // getting stored layout specified data
             let layoutId = await getTicket(ticket.id);
             let checkList = await getCheckList();
             let list = checkList[layoutId]
                 ? checkList[layoutId]
-                : checkList["default"];
+                : checkList["default"] || [];
+            console.log(layoutId, checkList, '...');
             checkListData = [...list];
         }
         data.set({ checkListData, ticketId: ticket.id });
@@ -58,11 +57,22 @@
         await initApp();
         console.log($APP);
 
-        $APP?.instance.on("ticket_Shift", async () => {
-            console.log("first");
-            await getDetails();
-        });
-        await getDetails();
+        try {
+            // this function for the onChange ticket from detailview 
+            $APP?.instance.on("ticket_Shift", async () => {
+                await getDetails();
+            });
+            await getDetails(); 
+        } catch (error) {
+            ZOHODESK.notify({
+                title : "Error",
+                content : `Something went wrong, Please reload the extension`,
+                icon:"success",
+                autoClose: false
+            });
+            throw new Error("check the onmount method in app");
+        }
+
     });
 </script>
 
