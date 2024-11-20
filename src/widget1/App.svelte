@@ -51,7 +51,8 @@
                 data.set({
                     layoutList,
                     checkListData,
-                    activeTemplate: 'default'
+                    activeTemplate: 'default',
+                    isSaved: true
                 });
             } else {
                 data.set({

@@ -48,6 +48,7 @@
                     value = '';
                 }
                 isEdited = true;
+                $context_data.isSaved = false;
             }
         }
     }
@@ -69,6 +70,7 @@
                 await setCheckList(contextData);
                 delete $context_data.checkListData[template];
                 $context_data.activeTemplate = 'default';
+                $context_data.isSaved = true; 
                 $context_data = {...$context_data};
             } catch (error) {
                 ZOHODESK.notify({
@@ -102,6 +104,7 @@
         let newList = $context_data.checkListData[$context_data.activeTemplate] || [];
         list = [...newList];
         isEdited = false;
+        $context_data.isSaved = true; 
     }
 
     const onSave = async () => {
@@ -113,10 +116,11 @@
             isEdited = false;
             ZOHODESK.notify({
                 title : "Success",
-                content : `Successfully added checklist data in ${template} layout template`,
+                content : `Successfully added checklist data in "${template === 'default' ? template : $context_data.layoutList[template].text}" layout template`,
                 icon:"success",
                 autoClose: false
             });
+            $context_data.isSaved = true; 
         } catch (error) {
             ZOHODESK.notify({
                 title : "Error",
@@ -126,7 +130,7 @@
             });
             throw new Error("check the onSave method");
         } finally {
-            isSaving = false; 
+            isSaving = false;
         }
     }
 
@@ -185,7 +189,7 @@
         <Band type="footer">
             <div slot="right">
                 <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
-                <Button variant="primary" on:click={onSave}>
+                <Button variant="primary" on:click={onSave} disabled={isSaving}>
                     {#if isSaving}
                         <Spinner slot="left-icon" onbrand /> Loading 
                     {:else} 

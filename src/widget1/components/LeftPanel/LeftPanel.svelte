@@ -20,18 +20,33 @@
         return !(addedLayoutList.includes(value.id))
     });
 
+    const handleSelect = (e:any, id:string) => {
+        if($context_data.isSaved) {
+            $context_data.activeTemplate = id;
+        } else {
+            try {
+                ZOHODESK.showpopup({
+                    title : "Data loss",
+                    content:"Please save your last entries and continue.",
+                    type : "alert",
+                    contentType : "html",
+                    color : "red",
+                    okText : "Ok"
+                });
+            } catch (error) {
+                throw new Error("check the onDeleteTemplate method");
+            }
+        }
+    }
+
     const handleAdd = (e: any, id: string) => {
         let obj = {
             [id]: [],
         };
         $context_data.checkListData = { ...obj, ...$context_data.checkListData };
-        $context_data.activeTemplate = id;
+        handleSelect({}, id);
         isPopupOpen = false;
     };
-
-    const handleSelect = (e:any, id:string) => {
-        $context_data.activeTemplate = id;
-    }
 
 </script>
 

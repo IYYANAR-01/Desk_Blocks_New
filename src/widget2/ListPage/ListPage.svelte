@@ -124,7 +124,7 @@
         <Band type="footer">
             <div slot="right">
                 <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
-                <Button variant="primary" on:click={onSave}>
+                <Button variant="primary" on:click={onSave} disabled={isSaving}>
                     {#if isSaving}
                         <Spinner slot="left-icon" onbrand /> Saving 
                     {:else} 
