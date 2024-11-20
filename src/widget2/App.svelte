@@ -10,7 +10,7 @@
         getCheckList,
         getCheckList_ticket,
     } from "../utils/utils";
-    import { CONTEXT_NAME } from "./constants";
+    import { CONTEXT_NAME, DEFAULT_DATA } from "./constants";
     import "../common/common.css";
 
     // context data type
@@ -45,8 +45,7 @@
             let checkList = await getCheckList();
             let list = checkList[layoutId]
                 ? checkList[layoutId]
-                : checkList["default"] || [];
-            console.log(layoutId, checkList, '...');
+                : checkList["default"] || DEFAULT_DATA;
             checkListData = [...list];
         }
         data.set({ checkListData, ticketId: ticket.id });
