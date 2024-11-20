@@ -20,11 +20,3 @@
     background-color: var(--db-color-bg-selected);
     cursor: default;
 }
-
-.deleteBtn {
-    display: none;
-}
-
-.container:hover .deleteBtn{
-    display: block;
-}

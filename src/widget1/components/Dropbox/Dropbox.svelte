@@ -2,7 +2,7 @@
     import { Text } from "deskblocks";
     import style from "./Dropbox.module.css";
     export let position = "leftTop";
-    type Options = { text: string; id: string };
+    type Options = { text: string; id: string, departmentId: string };
     export let options: Options[] = [];
     export let onClick = (e:any, id:string) => {};
 
