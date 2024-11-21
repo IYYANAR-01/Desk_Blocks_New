@@ -4,6 +4,7 @@
     import { IconPlus } from "deskblocks/icons";
     import PanelList from "../PanelList/PanelList.svelte";
     import Dropbox from "../Dropbox/Dropbox.svelte";
+    import { clickOutside } from './clickOutside.js'
     import "../../../common/common.css";
     import style from "./LeftPanel.module.css";
     import { CONTEXT_NAME } from "../../constants";
@@ -11,6 +12,7 @@
     let isPopupOpen = false;
     const toggleDropbox = () => {
         isPopupOpen = !isPopupOpen;
+        console.log('...');
     };
 
     const context_data: any = getContext(CONTEXT_NAME);
@@ -63,7 +65,7 @@
     <div class={`${style.header} dflex alignCenter noShrink`}>
         <Text weight="medium" class={style.heading}>Layout Specified Templates</Text>
     </div>
-    <div class={style.addBtnWrapper}>
+    <div class={style.addBtnWrapper} use:clickOutside on:outsideclick={() => {isPopupOpen = false}}>
         {#if dropboxList.length !== 0}
             <Button class="btn" on:click={toggleDropbox}>
                 <Icon icon={IconPlus} size={20} />
@@ -76,6 +78,7 @@
                 position="leftTop" 
                 options={dropboxList} 
                 onClick={handleAdd} 
+                clickOutside={clickOutside}
             />
         {/if}
     </div>

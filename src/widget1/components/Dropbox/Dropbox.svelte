@@ -5,10 +5,11 @@
     type Options = { text: string; id: string, departmentId: string };
     export let options: Options[] = [];
     export let onClick = (e:any, id:string) => {};
+    export let clickOutside;
 
 </script>
 
-<div class={`${style.container} ${style[position]} scrollY`}>
+<div class={`${style.container} ${style[position]} scrollY`} use:clickOutside>
     {#each options as data}
         <button class={`${style.list} dotted`} on:click={(e)=>onClick(e, data.id)}>
             <Text tag="p" size="small">{data.text}</Text>
