@@ -1,5 +1,5 @@
 .container {
-    width: 250px;
+    width: 200px;
     border-right: 1px solid var(--db-color-border);
     background-color: var(--db-color-bg-secondary);
 }

@@ -27,18 +27,19 @@
   "cspDomains": {
     "connect-src": []
   },
-  "zohoAuthorisation": {},
-  "connectors": [{
+  "zohoAuthorisation": {
     "connectionLinkName": "checklist_app",
     "connectionName": "checklist_app",
     "serviceName": "zlabs_integration",
     "userAccess": true,
     "isUserDefinedService": false,
+    "type": "connectors",
     "sharedBy": "665784067",
     "scope": [
       "Desk.basic.READ"
     ]
-  }],
+  },
+  "connectors": [],
   "config": [],
   "moduleSupport": false
 }

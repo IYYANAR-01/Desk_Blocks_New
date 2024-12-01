@@ -1,10 +1,8 @@
 <script lang="ts">
     import { onMount, setContext } from "svelte";
     import { writable } from "svelte/store";
-    import { Text } from "deskblocks";
     import { APP, initApp } from "../lib/util";
     import ListPage from "./ListPage/ListPage.svelte";
-    import Band from "../components/Band/Band.svelte";
     import {
         getTicket,
         getCheckList,
@@ -24,7 +22,7 @@
 
     let isLoading = true;
 
-    const getDetails = async () => {
+    const getDetails = async ($APP:any) => {
         // get the ticket data
         let ticket;
         try {
@@ -41,7 +39,8 @@
             checkListData = [...checkListTicket];
         } catch (error) {
             // getting stored layout specified data
-            let layoutId = await getTicket(ticket.id);
+            let domain = $APP?.instance.serviceOrigin;
+            let layoutId = await getTicket(ticket.id, domain);
             let checkList = await getCheckList();
             let list = checkList[layoutId]
                 ? checkList[layoutId]
@@ -58,10 +57,8 @@
 
         try {
             // this function for the onChange ticket from detailview 
-            $APP?.instance.on("ticket_Shift", async () => {
-                await getDetails();
-            });
-            await getDetails(); 
+            $APP?.instance.on("ticket_Shift", ()=>getDetails($APP));
+            getDetails($APP); 
         } catch (error) {
             ZOHODESK.notify({
                 title : "Error",
@@ -76,9 +73,6 @@
 </script>
 
 <main class="cover dflex flexDir">
-    <Band>
-        <Text weight="bold" slot="left">CheckList</Text>
-    </Band>
     {#if isLoading}
         <div>Loading...</div>
     {:else}

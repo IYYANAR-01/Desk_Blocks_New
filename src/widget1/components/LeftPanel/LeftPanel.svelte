@@ -5,14 +5,13 @@
     import PanelList from "../PanelList/PanelList.svelte";
     import Dropbox from "../Dropbox/Dropbox.svelte";
     import { clickOutside } from './clickOutside.js'
+    import { CONTEXT_NAME } from "../../constants";
     import "../../../common/common.css";
     import style from "./LeftPanel.module.css";
-    import { CONTEXT_NAME } from "../../constants";
 
     let isPopupOpen = false;
     const toggleDropbox = () => {
         isPopupOpen = !isPopupOpen;
-        console.log('...');
     };
 
     const context_data: any = getContext(CONTEXT_NAME);
@@ -58,12 +57,11 @@
             id="default"
             text="Default Template" 
             isActive={$context_data?.activeTemplate === "default"} 
-            needDelete={false} 
             onClick={handleSelect}
         />
     </div>
     <div class={`${style.header} dflex alignCenter noShrink`}>
-        <Text weight="medium" class={style.heading}>Layout Specified Templates</Text>
+        <Text weight="medium" class={style.heading}>Layouts</Text>
     </div>
     <div class={style.addBtnWrapper} use:clickOutside on:outsideclick={() => {isPopupOpen = false}}>
         {#if dropboxList.length !== 0}
@@ -88,7 +86,6 @@
             <PanelList
                 onClick={handleSelect}
                 id={template}
-                needDelete={false} 
                 text={$context_data.layoutList[template].text}
                 isActive={$context_data.activeTemplate === $context_data.layoutList[template].id}
             />

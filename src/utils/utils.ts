@@ -1,8 +1,8 @@
 import { DB } from "../lib/util";
 
-export async function getLayoutList() {
+export async function getLayoutList(domain:string) {
     const payloadLayout:RequestOptions = {
-        url: `https://desk.zoho.com/api/v1/layouts?module=tickets`,
+        url: `${domain}/api/v1/layouts?module=tickets`,
         headers: {},
         type: "GET",
         data: {},
@@ -10,7 +10,7 @@ export async function getLayoutList() {
         responseType: "json",
     };
     const payloadDept:RequestOptions = {
-        url: `https://desk.zoho.com/api/v1/departments?isEnabled=true`,
+        url: `${domain}/api/v1/departments?isEnabled=true`,
         headers: {},
         type: "GET",
         data: {},
@@ -49,9 +49,9 @@ export async function setCheckList (value:any) {
     return await DB.set({ key: "checkList", value, queriableValue: "checkList_layout" });
 }
 
-export async function getTicket(id:number) {
+export async function getTicket(id:number, domain:string) {
     const payload:RequestOptions = {
-        url: `https://desk.zoho.com/api/v1/tickets/${id}?include=contacts,products,assignee,departments,team`,
+        url: `${domain}/api/v1/tickets/${id}?include=contacts,products,assignee,departments,team`,
         headers: {},
         type: "GET",
         data: {},

@@ -25,7 +25,7 @@
 
     onMount(async () => {
         await initApp();
-        console.log($APP);
+        console.log($APP, '...app');
 
         try {
             // getting edition of this portal
@@ -44,7 +44,8 @@
 
             if (isMultiLayout) {
                 // get layouts for layout specified templates
-                let layoutList = await getLayoutList();
+                let domain = $APP?.instance.serviceOrigin;
+                let layoutList = await getLayoutList(domain);
                 if(Object.keys(layoutList).length <= 1) {
                     isMultiLayout = false;
                 }
@@ -79,7 +80,7 @@
 <main class="cover dflex flexDir">
     <Band>
         <Text slot="left" weight="medium" size="large">
-            Create your Checklist
+            Configure your checklist template
         </Text>
     </Band>
     {#if isLoading}
