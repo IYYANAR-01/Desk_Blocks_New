@@ -122,15 +122,15 @@
     </div>
     {#if isEdited && curEditId === ""}
         <Band type="footer">
-            <div slot="right">
-                <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
+            <div slot="left">
                 <Button variant="primary" on:click={onSave} disabled={isSaving}>
                     {#if isSaving}
-                        <Spinner slot="left-icon" onbrand /> Saving 
+                    <Spinner slot="left-icon" onbrand /> Saving 
                     {:else} 
-                        Save
+                    Save
                     {/if}
                 </Button>
+                <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
             </div>
         </Band>
     {/if}

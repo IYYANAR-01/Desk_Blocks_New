@@ -19,7 +19,7 @@
         <Text 
             tag="p" 
             class="dotted" 
-            size="small"
+            size="medium"
             weight={isActive ? "medium" : "regular"}
         >
             {text}

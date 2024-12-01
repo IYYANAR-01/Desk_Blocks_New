@@ -48,7 +48,7 @@
                 let layoutList = await getLayoutList(domain);
                 if(Object.keys(layoutList).length <= 1) {
                     isMultiLayout = false;
-                }
+                } 
                 data.set({
                     layoutList,
                     checkListData,
@@ -72,7 +72,7 @@
                 icon:"success",
                 autoClose: false
             });
-            throw new Error("check the onmount method in app");
+            console.error(error);
         }
     });
 </script>

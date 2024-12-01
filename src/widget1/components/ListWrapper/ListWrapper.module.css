@@ -7,3 +7,8 @@
 .content {
     padding: 0 15px;
 }
+
+.emptyText {
+    color: var(--db-color-text-secondary);
+    margin-bottom: 16px;
+}

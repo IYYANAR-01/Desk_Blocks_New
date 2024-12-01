@@ -22,18 +22,13 @@
     bottom: -5px;
     left: 0;
     height: 1px;
-    width: 40px;
+    width: 25px;
     background-color: var(--db-color-bg-inverse);
 }
 
-.addBtnWrapper {
-    margin: 0 10px 10px;
-    position: relative;
-}
-
-.addBtn {
-    height: 32px !important;
-    width: 100%;
+.department {
+    padding: 14px 10px 10px 8px;
+    color: var(--db-color-text-secondary);
 }
 
 .content {

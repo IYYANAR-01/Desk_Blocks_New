@@ -21,16 +21,16 @@ export async function getLayoutList(domain:string) {
     let list = data.statusMessage.data || [];
 
     let  departments = await ZOHODESK.request(payloadDept);
-    let deptList = departments.data.statusMessage.data.map((d:any)=>d.id);
+    let departList = departments.data.statusMessage.data.map(({id}:any) => id)
 
     return list.reduce((acc:any, cur:any) => {
         const { layoutName, id, departmentId } = cur;
-        if(deptList.includes(departmentId)) {
+        if(departList.includes(departmentId)) {
             acc[`${id}`] = {
                 text: layoutName,
-                id,
-                departmentId
-            }
+                departmentId,
+                id
+            };
         }
         return acc;
     }, {});

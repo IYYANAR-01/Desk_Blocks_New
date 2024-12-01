@@ -17,17 +17,27 @@
     let curEditId:string = "";
     let isSaving:boolean = false;
 
+    let showInput = true;
     let template = $context_data.activeTemplate;
-    let list =  [...$context_data.checkListData[$context_data.activeTemplate]].map((data)=>{ return {...data} });
-
+    let list =  $context_data.checkListData[$context_data.activeTemplate] ? [...$context_data.checkListData[$context_data.activeTemplate]].map((data)=>{ return {...data} }) : [];
+    
+    $:isCreated = $context_data.checkListData[$context_data.activeTemplate] ? true : false;
+    
     $: {
         if(template !== $context_data.activeTemplate) {
             value = '';
             curEditId = '';
-            inputRef.focus();
+            if(inputRef) {
+                inputRef.focus();
+            }
             isEdited = false;
             template = $context_data.activeTemplate;
-            list =  [...$context_data.checkListData[$context_data.activeTemplate]].map((data)=>{ return {...data} });
+            list =  $context_data.checkListData[$context_data.activeTemplate] ? [...$context_data.checkListData[$context_data.activeTemplate]].map((data)=>{ return {...data} }) : [];
+            if(isCreated) {
+                showInput = true;
+            } else {
+                showInput = false
+            }
         }
     }
 
@@ -69,7 +79,8 @@
                 delete contextData[template];
                 await setCheckList(contextData);
                 delete $context_data.checkListData[template];
-                $context_data.activeTemplate = 'default';
+                list = [];
+                showInput = false;
                 $context_data.isSaved = true; 
                 $context_data = {...$context_data};
             } catch (error) {
@@ -82,7 +93,7 @@
                 throw new Error("check the onDeleteTemplate method");
             }
         } catch (error) {
-            
+            console.error(error);
         }
     }
 
@@ -98,6 +109,7 @@
         list.splice(id, 1);
         list = [...list];
         isEdited = true;
+        $context_data.isSaved = false;
     }
 
     const onCancel = () => {
@@ -110,17 +122,28 @@
     const onSave = async () => {
         isSaving = true;
         try {
-            let storedata = $context_data.checkListData;
-            storedata[$context_data.activeTemplate] = [...list];
-            await setCheckList(storedata);
-            isEdited = false;
-            ZOHODESK.notify({
-                title : "Success",
-                content : `Successfully added checklist data in "${template === 'default' ? template : $context_data.layoutList[template].text}" layout template`,
-                icon:"success",
-                autoClose: false
-            });
-            $context_data.isSaved = true; 
+            if(list.length === 0) {
+                ZOHODESK.showpopup({
+                    title : "Cannot Save",
+                    content:"Please add atleast one data.",
+                    type : "alert",
+                    contentType : "html",
+                    color : "red",
+                    okText : "Ok"
+                });
+            } else {
+                let storedata = $context_data.checkListData;
+                storedata[$context_data.activeTemplate] = [...list];
+                await setCheckList(storedata);
+                isEdited = false;
+                ZOHODESK.notify({
+                    title : "Success",
+                    content : `Successfully added checklist data in "${template === 'default' ? template : $context_data.layoutList[template].text}" layout template`,
+                    icon:"success",
+                    autoClose: false
+                });
+                $context_data.isSaved = true; 
+            }
         } catch (error) {
             ZOHODESK.notify({
                 title : "Error",
@@ -147,7 +170,7 @@
                 {$context_data.activeTemplate === 'default' ? 'Default Template' : `Layout - ${$context_data.layoutList[$context_data.activeTemplate].text}`}
             </Text>
             <div slot="right">
-                {#if $context_data.activeTemplate !== 'default'}
+                {#if $context_data.activeTemplate !== 'default' && isCreated}
                     <Button 
                         variant="danger-secondary" 
                         on:click={onDeleteTemplate}
@@ -158,18 +181,21 @@
             </div>
         </Band>
     {/if}
-    <div class={style.inputbox}>
-        <Textbox
-            handleKey={handleEnter}
-            handleBlur={""}
-            bind:value={value}
-            bind:ref={inputRef}
-        />
-    </div>
+    {#if showInput}
+        <div class={style.inputbox}>
+            <Textbox
+                handleKey={handleEnter}
+                handleBlur={""}
+                bind:value={value}
+                bind:ref={inputRef}
+            />
+        </div>
+    {/if}
     <div class={`${style.content} flexible scrollY`}>
-        {#if list.length === 0} 
-            <div class={`dflex cover alignBoth`}>
-                <Text weight='bold'>No CheckList Added</Text>
+        {#if !isCreated && !showInput} 
+            <div class={`dflex cover alignBoth flexDir`}>
+                <Text size='small' class={style.emptyText}>No checklist template added for this layout</Text>
+                <Button variant="secondary" on:click={()=>{ showInput = true }}>Add Checklist Template</Button>
             </div>
         {:else}
             {#each list as data, index}
@@ -187,15 +213,15 @@
     </div>
     {#if isEdited && curEditId === ""}
         <Band type="footer">
-            <div slot="right">
-                <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
+            <div slot="left">
                 <Button variant="primary" on:click={onSave} disabled={isSaving}>
                     {#if isSaving}
-                        <Spinner slot="left-icon" onbrand /> Loading 
+                    <Spinner slot="left-icon" onbrand /> Loading 
                     {:else} 
-                        Save
+                    Save
                     {/if}
                 </Button>
+                <Button variant="tertiary" on:click={onCancel}>Cancel</Button>
             </div>
         </Band>
     {/if}

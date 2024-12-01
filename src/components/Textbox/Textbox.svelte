@@ -1,7 +1,7 @@
 <script lang="ts">
     import style from './Textbox.module.css';
     export let value = '';
-    export let placeholder = "+ Type and click enter to add";
+    export let placeholder = "+ Add Checklist";
     export let handleKey;
     export let handleBlur;
     export let ref;
