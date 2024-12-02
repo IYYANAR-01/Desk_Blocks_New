@@ -9,7 +9,7 @@
   "modules": {
     "widgets": [
       {
-        "location": "desk.ticket.detail.subtab",
+        "location": "desk.extension.preference",
         "url": "/widget1.html",
         "name": "Preference",
         "logo": "/assets/logo.png",
