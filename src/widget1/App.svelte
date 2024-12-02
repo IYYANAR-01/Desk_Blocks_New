@@ -37,7 +37,7 @@
 
             if (isMultiLayout) {
                 // get layouts for layout specified templates
-                let domain:string|undefined = $APP?.instance.serviceOrigin;
+                let domain:string = $APP?.meta.deskDomainUrl as string;
                 let layoutList:LAYOUTDATA_TYPE = await getLayoutList(domain);
                 if(Object.keys(layoutList).length <= 1) {
                     isMultiLayout = false;

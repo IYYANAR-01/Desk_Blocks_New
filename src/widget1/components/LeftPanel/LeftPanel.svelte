@@ -2,11 +2,13 @@
     import { getContext } from "svelte";
     import { Text } from "deskblocks";
     import PanelList from "../PanelList/PanelList.svelte";
-    import { CONTEXT_NAME, type DATA_TYPE, type LAYOUTDATA_TYPE } from "../../constants/index";
+    import { CONTEXT_NAME } from "../../constants/index";
     import "../../../common/common.css";
     import style from "./LeftPanel.module.css";
 
     const context_data:any = getContext(CONTEXT_NAME);
+    
+    // separate by departments
     let data:any = Object.values($context_data.layoutList).reduce((acc:any, cur:any) => {
         const { departmentId } = cur;
         if(acc[departmentId]) {

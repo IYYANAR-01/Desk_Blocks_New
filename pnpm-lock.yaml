@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       deskblocks:
-        specifier: ^0.1.4
-        version: 0.1.4(svelte@4.2.19)
+        specifier: ^0.1.5
+        version: 0.1.5(svelte@4.2.19)
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.1.2
@@ -550,8 +550,8 @@ packages:
   deprecation@2.3.1:
     resolution: {integrity: sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==}
 
-  deskblocks@0.1.4:
-    resolution: {integrity: sha512-+Cj2leA5jCBuYVhqPLeEwbItTTovRahBRlw3fpIM+qqAkpfKinW6FGjPqpz+jLXOJN2gOZ0a2nknzSKKnKTlGA==}
+  deskblocks@0.1.5:
+    resolution: {integrity: sha512-AMGwAibx9OiclfCr1LBWH3pbwdaZ+HPRnWjTTB9u01i+tVVmVWpvvtTsKXGkZpw1SPNP2pFRCX3GPydyxXXWng==}
     peerDependencies:
       svelte: ^4.0.0
 
@@ -1367,7 +1367,7 @@ snapshots:
 
   deprecation@2.3.1: {}
 
-  deskblocks@0.1.4(svelte@4.2.19):
+  deskblocks@0.1.5(svelte@4.2.19):
     dependencies:
       '@floating-ui/dom': 1.6.11
       svelte: 4.2.19
