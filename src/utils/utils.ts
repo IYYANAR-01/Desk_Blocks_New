@@ -1,6 +1,7 @@
 import { DB } from "../lib/util";
+import type { CHECKLIST_TYPE, LAYOUTDATA_TYPE } from "../widget1/constants";
 
-export async function getLayoutList(domain:string) {
+export async function getLayoutList(domain:string="https://desk.zoho.com") {
     const payloadLayout:RequestOptions = {
         url: `${domain}/api/v1/layouts?module=tickets`,
         headers: {},
@@ -21,9 +22,14 @@ export async function getLayoutList(domain:string) {
     let list = data.statusMessage.data || [];
 
     let  departments = await ZOHODESK.request(payloadDept);
-    let departList = departments.data.statusMessage.data.map(({id}:any) => id)
+    let departList = departments.data.statusMessage.data.map(({id}: { id:string }) => id)
 
-    return list.reduce((acc:any, cur:any) => {
+    type layoutData = {
+        layoutName:string, 
+        departmentId:string
+        id:string, 
+    }
+    return list.reduce((acc:LAYOUTDATA_TYPE, cur:layoutData) => {
         const { layoutName, id, departmentId } = cur;
         if(departList.includes(departmentId)) {
             acc[`${id}`] = {
@@ -45,11 +51,11 @@ export async function getCheckList () {
     return data["database.get"].data ? data["database.get"].data[0].value : {};
 };
 
-export async function setCheckList (value:any) {
+export async function setCheckList (value:CHECKLIST_TYPE) {
     return await DB.set({ key: "checkList", value, queriableValue: "checkList_layout" });
 }
 
-export async function getTicket(id:number, domain:string) {
+export async function getTicket(id:number, domain:string="https://desk.zoho.com") {
     const payload:RequestOptions = {
         url: `${domain}/api/v1/tickets/${id}?include=contacts,products,assignee,departments,team`,
         headers: {},
@@ -71,6 +77,6 @@ export async function getCheckList_ticket (id:number) {
     return data["database.get"].data[0].value.data;
 };
 
-export async function setCheckList_ticket (key:number ,value:any) {
+export async function setCheckList_ticket (key:number, value:{ text: string, isChecked: boolean }[]) {
     return await DB.set({ key: `${key}`, value: { data: value }, queriableValue: "checkList_ticket" });
 }

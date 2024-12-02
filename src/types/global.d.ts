@@ -331,6 +331,8 @@ declare global {
              * });
              */
             modal(options: ModalOptions): Promise<ModalResponse>;
+
+            serviceOrigin?:string = ""
         };
 
         /**
@@ -601,6 +603,9 @@ declare global {
          * Default is "red".
          */
         color?: "red" | "blue";
+
+        okText?: string;
+        cancelText?: string
     }
 
     interface InvokeOptions {

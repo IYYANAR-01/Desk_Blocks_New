@@ -1,28 +1,21 @@
 <script lang="ts">
-    import { getContext, onMount } from "svelte";
+    import { getContext } from "svelte";
     import { Text } from "deskblocks";
     import PanelList from "../PanelList/PanelList.svelte";
-    import { CONTEXT_NAME } from "../../constants";
+    import { CONTEXT_NAME, type DATA_TYPE, type LAYOUTDATA_TYPE } from "../../constants/index";
     import "../../../common/common.css";
     import style from "./LeftPanel.module.css";
 
-    type dataType = {
-        [key: string]: {
-            text: string;
-            id: string;
-            departmentId: string;
-        }[];
-    };
-    const context_data: any = getContext(CONTEXT_NAME);
-    let data:dataType = Object.values($context_data.layoutList).reduce((acc:any, cur:any) => {
-            const { departmentId } = cur;
-            if(acc[departmentId]) {
-                acc[departmentId].push(cur);
-            } else {
-                acc[departmentId] = [cur];
-            }
-            return acc;
-        }, {});;
+    const context_data:any = getContext(CONTEXT_NAME);
+    let data:any = Object.values($context_data.layoutList).reduce((acc:any, cur:any) => {
+        const { departmentId } = cur;
+        if(acc[departmentId]) {
+            acc[departmentId].push(cur);
+        } else {
+            acc[departmentId] = [cur];
+        }
+        return acc;
+    }, {});
     let departmentIds:string[] = Object.keys(data);
 
     const handleSelect = (e:any, id:string) => {
@@ -50,7 +43,7 @@
     <div class={`${style.default}`}>
         <PanelList 
             id="default"
-            text="Default Template" 
+            text="Default Checklist" 
             isActive={$context_data?.activeTemplate === "default"} 
             onClick={handleSelect}
         />

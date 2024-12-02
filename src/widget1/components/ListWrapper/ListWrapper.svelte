@@ -3,7 +3,7 @@
     import { Text, Spinner, Button } from "deskblocks";
     import Band from "../../../components/Band/Band.svelte";
     import List from "../../../components/List/List.svelte";
-    import { CONTEXT_NAME } from "../../constants";
+    import { CONTEXT_NAME } from "../../constants/index";
     import Textbox from "../../../components/Textbox/Textbox.svelte";
     import { setCheckList } from "../../../utils/utils";
     import '../../../common/common.css';
@@ -41,7 +41,7 @@
         }
     }
 
-    const handleEdit = async (editedValue:any, id:any) => {
+    const handleEdit = async (editedValue:any, id:number) => {
         list[id].text = editedValue;
         curEditId = "";
         value = "";
@@ -52,7 +52,7 @@
             value = value.trim();
             if(value !== '') {
                 if(curEditId !== '') {
-                    handleEdit(value, curEditId);
+                    handleEdit(value, Number(curEditId));
                 } else {
                     list = [{ text: value }, ...list];
                     value = '';

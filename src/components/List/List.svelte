@@ -1,15 +1,15 @@
 <script lang="ts">
-    import { Text, Checkbox, IconButton, Icon, tooltip } from 'deskblocks';
+    import { Text, Checkbox, IconButton, Icon } from 'deskblocks';
 	import { IconEdit, IconDelete } from 'deskblocks/icons';
     import style from './List.module.css';
 
-    export let id;
-    export let text = 'text';
-    export let needCheckbox = true;
-    export let isChecked = false;
-    export let handleEdit = (e:any, id:number) => {};
-    export let handleDelete = (e:any, id:number) => {};
-    export let handleCheck = (e:any, id:number, isChecked:boolean) => {};
+    export let id:number;
+    export let text:string = 'text';
+    export let needCheckbox:boolean = true;
+    export let isChecked:boolean = false;
+    export let handleEdit:Function = (e:any, id:number) => {};
+    export let handleDelete:Function = (e:any, id:number) => {};
+    export let handleCheck:Function = (e:any, id:number, isChecked:boolean) => {};
     export let isEditable = false;
     export let needAction = true;
 

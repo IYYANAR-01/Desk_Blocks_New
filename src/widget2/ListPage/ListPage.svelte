@@ -11,16 +11,16 @@
 
     const context_data: any = getContext(CONTEXT_NAME);
 
-    let value:string = '';
     let inputRef:any;
+    let value:string = '';
     let isEdited:boolean = false;
     let curEditId:string = "";
     let isSaving:boolean = false;
 
-    let list:any =  [...$context_data.checkListData].map((data)=>{ return {...data} });
+    $:list =  [...$context_data.checkListData].map((data)=>{ return {...data} });
 
-    const handleEdit = async (editedValue:any, id:any) => {
-        list[id].text = editedValue;
+    const handleEdit = async (editedValue:any, id:number) => {
+        list[`${id}`].text = editedValue;
         curEditId = "";
         value = "";
     }
@@ -30,7 +30,7 @@
             value = value.trim();
             if(value !== '') {
                 if(curEditId !== '') {
-                    handleEdit(value, curEditId);
+                    handleEdit(value, Number(curEditId));
                 } else {
                     list = [{ text: value }, ...list];
                     value = '';

@@ -12,15 +12,23 @@
     import "../common/common.css";
 
     // context data type
+
+    type checklist = {
+        [key:string]: {
+            text: string,
+            isChecked: boolean
+        }[]
+    };
+
     type Data = {
-        checklistData: any;
-        ticketId: number;
+        checklistData:checklist,
+        ticketId:number
     };
 
     let data = writable<Data | {}>({});
     setContext(CONTEXT_NAME, data);
 
-    let isLoading = true;
+    let isLoading:boolean = true;
 
     const getDetails = async ($APP:any) => {
         // get the ticket data

@@ -7,21 +7,14 @@
     import ListWrapper from "./components/ListWrapper/ListWrapper.svelte";
     import { APP, initApp } from "../lib/util";
     import { getLayoutList, getCheckList, setCheckList } from "../utils/utils";
-    import { DEFAULT_DATA, CONTEXT_NAME } from "./constants";
+    import { DEFAULT_DATA, CONTEXT_NAME, type LAYOUTDATA_TYPE, type CHECKLIST_TYPE, type DATA_TYPE } from "./constants/index";
     import '../common/common.css';
 
-    let isMultiLayout: boolean;
-    let isLoading = true;
-
-    // context data type
-    type Data = {
-        layoutList: any;
-        checklistData: any;
-        activeTemplate: string;
-    };
-
-    let data = writable<Data | {}>({});
+    let data = writable<DATA_TYPE | {}>({});
     setContext(CONTEXT_NAME, data);
+
+    let isMultiLayout:boolean;
+    let isLoading:boolean = true;
 
     onMount(async () => {
         await initApp();
@@ -35,7 +28,7 @@
 
             // get the stored DB data
             let checkList = await getCheckList();
-            let checkListData: any;
+            let checkListData: CHECKLIST_TYPE;
             if (Object.keys(checkList).length === 0) {
                 checkListData = { ...DEFAULT_DATA };
             } else {
@@ -44,8 +37,8 @@
 
             if (isMultiLayout) {
                 // get layouts for layout specified templates
-                let domain = $APP?.instance.serviceOrigin;
-                let layoutList = await getLayoutList(domain);
+                let domain:string|undefined = $APP?.instance.serviceOrigin;
+                let layoutList:LAYOUTDATA_TYPE = await getLayoutList(domain);
                 if(Object.keys(layoutList).length <= 1) {
                     isMultiLayout = false;
                 } 
